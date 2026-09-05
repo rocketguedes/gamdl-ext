@@ -9,6 +9,14 @@ A command-line app for downloading Apple Music songs, music videos and post vide
 
 **Join our Discord Server:** <https://discord.gg/aBjMEZ9tnq>
 
+## 🚀 Extended Features
+
+- 👥 **Multi-Valued Artists** - Individual track and album artist tagging (`artists`, `albumartists`)
+- 🎼 **Individual Composers** - Multi-valued composer credits (`©wrt`)
+- 🏷️ **Extended Industry Identifiers** - Official ISRC (`isrc`), UPC/Barcode (`barcode`), and Record Label (`label`) tagging
+- 💿 **Release Type Classification** - Accurate categorization into `single`, `ep`, `compilation`, and `album` (`releasetype`)
+- 🌐 **Audio Language & Album Date** - Native BCP 47 `language` tagging (`audioLocale`) and album-level `releasedate`
+
 ## ✨ Features
 
 - 🎵 **High-Quality Songs** - Download songs in AAC 256kbps and other codecs
