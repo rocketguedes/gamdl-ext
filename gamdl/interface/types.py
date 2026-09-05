@@ -38,6 +38,7 @@ class MediaTags:
     media_type: MediaType = None
     rating: MediaRating = None
     record_label: str = None
+    release_date: str = None
     storefront: str = None
     title: str = None
     title_id: int = None
@@ -103,6 +104,7 @@ class MediaTags:
             "----:com.apple.itunes:barcode": (self.upc.encode("utf-8") if self.upc else None),
             "----:com.apple.itunes:isrc": (self.isrc.encode("utf-8") if self.isrc else None),
             "----:com.apple.itunes:label": (self.record_label.encode("utf-8") if self.record_label else None),
+            "----:com.apple.itunes:releasedate": (self.release_date.encode("utf-8") if self.release_date else None),
         }
 
         return {

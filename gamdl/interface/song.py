@@ -721,6 +721,7 @@ class AppleMusicSongInterface:
             album_attributes = albums[0]["attributes"]
             media.tags.upc = album_attributes.get("upc")
             media.tags.record_label = album_attributes.get("recordLabel")
+            media.tags.release_date = album_attributes.get("releaseDate")
 
         if not self.skip_stream_info:
             media.stream_info = await self.get_stream_info(
