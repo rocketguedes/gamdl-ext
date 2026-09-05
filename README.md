@@ -200,7 +200,7 @@ The file is created automatically on first run. Command-line arguments override 
 **Tags for exclude-tags only:**
 
 - `album_sort`, `artist_sort`, `composer_sort`, `title_sort`
-- `comment`, `compilation`, `copyright`, `cover`, `gapless`, `genre`, `genre_id`, `isrc`, `lyrics`, `rating`, `record_label`, `release_date`, `storefront`, `upc`, `xid`
+- `artists`, `comment`, `compilation`, `copyright`, `cover`, `gapless`, `genre`, `genre_id`, `isrc`, `lyrics`, `rating`, `record_label`, `release_date`, `storefront`, `upc`, `xid`
 - `all` (special: skip all tagging)
 
 ### Logging Level

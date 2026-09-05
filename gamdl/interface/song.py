@@ -723,6 +723,18 @@ class AppleMusicSongInterface:
             media.tags.record_label = album_attributes.get("recordLabel")
             media.tags.release_date = album_attributes.get("releaseDate")
 
+        artists = (
+            media.media_metadata.get("relationships", {})
+            .get("artists", {})
+            .get("data", [])
+        )
+        if artists:
+            media.tags.artists = [
+                a["attributes"]["name"]
+                for a in artists
+                if "attributes" in a and "name" in a["attributes"]
+            ]
+
         if not self.skip_stream_info:
             media.stream_info = await self.get_stream_info(
                 media.media_id,
