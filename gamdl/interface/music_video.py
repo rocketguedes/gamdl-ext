@@ -490,7 +490,9 @@ class AppleMusicMusicVideoInterface:
             .get("data", [])
         )
         if albums:
-            media.tags.record_label = albums[0]["attributes"].get("recordLabel")
+            album_attributes = albums[0]["attributes"]
+            media.tags.upc = album_attributes.get("upc")
+            media.tags.record_label = album_attributes.get("recordLabel")
 
         m3u8_master_url = await self.get_m3u8_master_url(
             media.media_metadata,
