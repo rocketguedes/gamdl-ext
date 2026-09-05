@@ -712,6 +712,13 @@ class AppleMusicSongInterface:
             )
 
         media.tags.isrc = media.media_metadata["attributes"].get("isrc")
+        albums = (
+            media.media_metadata.get("relationships", {})
+            .get("albums", {})
+            .get("data", [])
+        )
+        if albums:
+            media.tags.record_label = albums[0]["attributes"].get("recordLabel")
 
         if not self.skip_stream_info:
             media.stream_info = await self.get_stream_info(

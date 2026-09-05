@@ -37,6 +37,7 @@ class MediaTags:
     lyrics: str = None
     media_type: MediaType = None
     rating: MediaRating = None
+    record_label: str = None
     storefront: str = None
     title: str = None
     title_id: int = None
@@ -99,6 +100,7 @@ class MediaTags:
             "trkn": track_mp4,
             "xid ": self.xid,
             "----:com.apple.itunes:isrc": (self.isrc.encode("utf-8") if self.isrc else None),
+            "----:com.apple.itunes:label": (self.record_label.encode("utf-8") if self.record_label else None),
         }
 
         return {
