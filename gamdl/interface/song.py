@@ -112,6 +112,9 @@ class AppleMusicSongInterface:
                     stanza.append(text)
 
                 if p.attrib.get("begin"):
+                    if self.synced_lyrics_format == SyncedLyricsFormat.ELRC:
+                        synced_lyrics.append(self._get_lyrics_line_elrc(p))
+
                     if self.synced_lyrics_format == SyncedLyricsFormat.LRC:
                         synced_lyrics.append(self._get_lyrics_line_lrc(p))
 
@@ -171,6 +174,40 @@ class AppleMusicSongInterface:
             f"{timestamp_end.strftime('%H:%M:%S,%f')[:-3]}\n"
             f"{text}\n"
         )
+
+    def _format_lrc_timestamp(self, timestamp_ttml: str) -> str:
+        timestamp = self._parse_ttml_timestamp(timestamp_ttml)
+        ms_new = timestamp.strftime("%f")[:-3]
+
+        if int(ms_new[-1]) >= 5:
+            ms = int(f"{int(ms_new[:2]) + 1}") * 10
+            timestamp += datetime.timedelta(milliseconds=ms) - datetime.timedelta(
+                microseconds=timestamp.microsecond
+            )
+
+        return timestamp.strftime("%M:%S.%f")[:-4]
+
+    def _get_lyrics_line_elrc(self, element: ElementTree.Element) -> str:
+        timestamp_ttml = element.attrib.get("begin")
+        timestamp_str = self._format_lrc_timestamp(timestamp_ttml)
+        spans = element.findall("{http://www.w3.org/ns/ttml}span")
+        if not spans:
+            return f"[{timestamp_str}]" + "".join(element.itertext())
+
+        words = []
+        if element.text:
+            words.append(element.text)
+        for span in spans:
+            span_begin = span.attrib.get("begin")
+            span_time = self._format_lrc_timestamp(span_begin) if span_begin else ""
+            span_text = span.text or ""
+            span_tail = span.tail or ""
+            if span_time:
+                words.append(f"<{span_time}>{span_text}{span_tail}")
+            else:
+                words.append(f"{span_text}{span_tail}")
+
+        return f"[{timestamp_str}]{''.join(words)}"
 
     def _get_lyrics_line_lrc(self, element: ElementTree.Element) -> str:
         timestamp_ttml = element.attrib.get("begin")
