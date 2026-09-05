@@ -483,6 +483,8 @@ class AppleMusicMusicVideoInterface:
                 itunes_page_metadata,
             )
 
+        media.tags.isrc = media.media_metadata["attributes"].get("isrc")
+
         m3u8_master_url = await self.get_m3u8_master_url(
             media.media_metadata,
             itunes_page_metadata,

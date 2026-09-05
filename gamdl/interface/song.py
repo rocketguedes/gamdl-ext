@@ -711,6 +711,8 @@ class AppleMusicSongInterface:
                 self.use_album_date,
             )
 
+        media.tags.isrc = media.media_metadata["attributes"].get("isrc")
+
         if not self.skip_stream_info:
             media.stream_info = await self.get_stream_info(
                 media.media_id,

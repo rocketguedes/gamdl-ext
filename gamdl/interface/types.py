@@ -33,6 +33,7 @@ class MediaTags:
     gapless: bool = None
     genre: str = None
     genre_id: int = None
+    isrc: str = None
     lyrics: str = None
     media_type: MediaType = None
     rating: MediaRating = None
@@ -97,6 +98,7 @@ class MediaTags:
             "sonm": self.title_sort,
             "trkn": track_mp4,
             "xid ": self.xid,
+            "----:com.apple.itunes:isrc": (self.isrc.encode("utf-8") if self.isrc else None),
         }
 
         return {
