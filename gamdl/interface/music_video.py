@@ -435,7 +435,7 @@ class AppleMusicMusicVideoInterface:
         self,
         media: AppleMusicMedia,
     ) -> AsyncGenerator[AppleMusicMedia, None]:
-        if not media.media_metadata:
+        if not media.media_metadata or not media.media_metadata.get("relationships"):
             media.media_metadata = (
                 await (
                     self.base.apple_music_api.get_library_music_video(media.media_id)
@@ -494,6 +494,15 @@ class AppleMusicMusicVideoInterface:
             media.tags.upc = album_attributes.get("upc")
             media.tags.record_label = album_attributes.get("recordLabel")
             media.tags.release_date = album_attributes.get("releaseDate")
+            album_name = album_attributes.get("name", "")
+            if album_attributes.get("isCompilation"):
+                media.tags.releasetype = "compilation"
+            elif album_attributes.get("isSingle"):
+                media.tags.releasetype = "single"
+            elif album_name.lower().endswith(" - ep"):
+                media.tags.releasetype = "ep"
+            else:
+                media.tags.releasetype = "album"
             if album_attributes.get("artistName"):
                 media.tags.album_artist = album_attributes["artistName"]
             album_data = await self.base.get_album_cached(albums[0]["id"])

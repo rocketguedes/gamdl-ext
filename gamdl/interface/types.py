@@ -41,6 +41,7 @@ class MediaTags:
     rating: MediaRating = None
     record_label: str = None
     release_date: str = None
+    releasetype: str = None
     storefront: str = None
     title: str = None
     title_id: int = None
@@ -107,6 +108,7 @@ class MediaTags:
             "----:com.apple.iTunes:isrc": (self.isrc.encode("utf-8") if self.isrc else None),
             "----:com.apple.iTunes:label": (self.record_label.encode("utf-8") if self.record_label else None),
             "----:com.apple.iTunes:releasedate": (self.release_date.encode("utf-8") if self.release_date else None),
+            "----:com.apple.iTunes:releasetype": (self.releasetype.encode("utf-8") if self.releasetype else None),
             "----:com.apple.iTunes:artists": ([a.encode("utf-8") for a in self.artists] if self.artists else None),
             "----:com.apple.iTunes:albumartists": ([a.encode("utf-8") for a in self.album_artists] if self.album_artists else None),
         }
