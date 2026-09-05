@@ -365,6 +365,7 @@ class AppleMusicApi:
         self,
         album_id: str,
         extend: str = "extendedAssetUrls",
+        include: str = "artists",
     ) -> dict:
         log = logger.bind(action="get_album", album_id=album_id)
 
@@ -375,6 +376,7 @@ class AppleMusicApi:
             ),
             {
                 "extend": extend,
+                "include": include,
             },
         )
 

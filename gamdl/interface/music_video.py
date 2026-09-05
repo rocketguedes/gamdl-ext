@@ -494,6 +494,21 @@ class AppleMusicMusicVideoInterface:
             media.tags.upc = album_attributes.get("upc")
             media.tags.record_label = album_attributes.get("recordLabel")
             media.tags.release_date = album_attributes.get("releaseDate")
+            if album_attributes.get("artistName"):
+                media.tags.album_artist = album_attributes["artistName"]
+            album_data = await self.base.get_album_cached(albums[0]["id"])
+            if album_data:
+                album_artists = (
+                    album_data.get("relationships", {})
+                    .get("artists", {})
+                    .get("data", [])
+                )
+                if album_artists:
+                    media.tags.album_artists = [
+                        a["attributes"]["name"]
+                        for a in album_artists
+                        if "attributes" in a and "name" in a["attributes"]
+                    ]
 
         artists = (
             media.media_metadata.get("relationships", {})
