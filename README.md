@@ -1,9 +1,9 @@
-# Gamdl (Glomatico's Apple Music Downloader)
+# Gamdl (Extended Glomatico's Apple Music Downloader)
 
-[![PyPI version](https://img.shields.io/pypi/v/gamdl?color=blue)](https://pypi.org/project/gamdl/)
-[![Python versions](https://img.shields.io/pypi/pyversions/gamdl)](https://pypi.org/project/gamdl/)
-[![License](https://img.shields.io/github/license/glomatico/gamdl)](https://github.com/glomatico/gamdl/blob/main/LICENSE)
-[![Downloads](https://img.shields.io/pypi/dm/gamdl)](https://pypi.org/project/gamdl/)
+[![PyPI version](https://img.shields.io/pypi/v/gamdl-ext?color=blue)](https://pypi.org/project/gamdl-ext/)
+[![Python versions](https://img.shields.io/pypi/pyversions/gamdl-ext)](https://pypi.org/project/gamdl-ext/)
+[![License](https://img.shields.io/github/license/rocketguedes/gamdl-ext)](https://github.com/rocketguedes/gamdl-ext/blob/main/LICENSE)
+[![Downloads](https://img.shields.io/pypi/dm/gamdl-ext)](https://pypi.org/project/gamdl-ext/)
 
 A command-line app for downloading Apple Music songs, music videos and post videos.
 
@@ -58,7 +58,7 @@ N_m3u8DL-RE also needs FFmpeg. If the FFmpeg executable is not available in your
 1. **Install Gamdl via pip:**
 
    ```bash
-   pip install gamdl
+   pip install gamdl-ext
    ```
 
 2. **Set up the cookies file:**
@@ -89,19 +89,19 @@ gamdl [OPTIONS] URLS...
 **Download a song:**
 
 ```bash
-gamdl "https://music.apple.com/us/album/never-gonna-give-you-up-2022-remaster/1624945511?i=1624945512"
+gamdl-ext "https://music.apple.com/us/album/never-gonna-give-you-up-2022-remaster/1624945511?i=1624945512"
 ```
 
 **Download an album:**
 
 ```bash
-gamdl "https://music.apple.com/us/album/whenever-you-need-somebody-2022-remaster/1624945511"
+gamdl-ext "https://music.apple.com/us/album/whenever-you-need-somebody-2022-remaster/1624945511"
 ```
 
 **Download from an artist:**
 
 ```bash
-gamdl "https://music.apple.com/us/artist/rick-astley/669771"
+gamdl-ext "https://music.apple.com/us/artist/rick-astley/669771"
 ```
 
 **Interactive Prompt Controls:**
