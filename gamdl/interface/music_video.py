@@ -484,6 +484,7 @@ class AppleMusicMusicVideoInterface:
             )
 
         media.tags.isrc = media.media_metadata["attributes"].get("isrc")
+        media.tags.language = media.media_metadata["attributes"].get("audioLocale")
         albums = (
             media.media_metadata.get("relationships", {})
             .get("albums", {})
