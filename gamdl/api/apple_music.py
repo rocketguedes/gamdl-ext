@@ -302,7 +302,7 @@ class AppleMusicApi:
         self,
         song_id: str,
         extend: str = "extendedAssetUrls",
-        include: str = "lyrics,albums",
+        include: str = "syllable-lyrics,albums",
     ) -> dict:
         log = logger.bind(action="get_song", song_id=song_id)
 

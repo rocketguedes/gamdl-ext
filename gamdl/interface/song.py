@@ -63,7 +63,7 @@ class AppleMusicSongInterface:
 
         if (
             "relationships" not in song_metadata
-            or "lyrics" not in song_metadata["relationships"]
+            or "syllable-lyrics" not in song_metadata["relationships"]
         ):
             song_metadata = (
                 await self.base.apple_music_api.get_song(
@@ -72,17 +72,17 @@ class AppleMusicSongInterface:
             )["data"][0]
 
         if (
-            "lyrics" in song_metadata["relationships"]
-            and "data" in song_metadata["relationships"]["lyrics"]
-            and len(song_metadata["relationships"]["lyrics"]["data"]) > 0
-            and "attributes" in song_metadata["relationships"]["lyrics"]["data"][0]
-            and song_metadata["relationships"]["lyrics"]["data"][0]["attributes"].get(
+            "syllable-lyrics" in song_metadata["relationships"]
+            and "data" in song_metadata["relationships"]["syllable-lyrics"]
+            and len(song_metadata["relationships"]["syllable-lyrics"]["data"]) > 0
+            and "attributes" in song_metadata["relationships"]["syllable-lyrics"]["data"][0]
+            and song_metadata["relationships"]["syllable-lyrics"]["data"][0]["attributes"].get(
                 "ttml"
             )
             is not None
         ):
             lyrics = self._get_lyrics(
-                song_metadata["relationships"]["lyrics"]["data"][0]["attributes"][
+                song_metadata["relationships"]["syllable-lyrics"]["data"][0]["attributes"][
                     "ttml"
                 ],
             )
@@ -107,8 +107,9 @@ class AppleMusicSongInterface:
             unsynced_lyrics.append(stanza)
 
             for p in div.iter("{http://www.w3.org/ns/ttml}p"):
-                if p.text is not None:
-                    stanza.append(p.text)
+                text = "".join(p.itertext())
+                if text:
+                    stanza.append(text)
 
                 if p.attrib.get("begin"):
                     if self.synced_lyrics_format == SyncedLyricsFormat.LRC:
@@ -159,7 +160,7 @@ class AppleMusicSongInterface:
     def _get_lyrics_line_srt(self, index: int, element: ElementTree.Element) -> str:
         timestamp_begin_ttml = element.attrib.get("begin")
         timestamp_end_ttml = element.attrib.get("end")
-        text = element.text
+        text = "".join(element.itertext())
 
         timestamp_begin = self._parse_ttml_timestamp(timestamp_begin_ttml)
         timestamp_end = self._parse_ttml_timestamp(timestamp_end_ttml)
@@ -173,7 +174,7 @@ class AppleMusicSongInterface:
 
     def _get_lyrics_line_lrc(self, element: ElementTree.Element) -> str:
         timestamp_ttml = element.attrib.get("begin")
-        text = element.text
+        text = "".join(element.itertext())
 
         timestamp = self._parse_ttml_timestamp(timestamp_ttml)
         ms_new = timestamp.strftime("%f")[:-3]
