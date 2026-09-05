@@ -750,6 +750,30 @@ class AppleMusicSongInterface:
                 if "attributes" in a and "name" in a["attributes"]
             ]
 
+        credits = (
+            media.media_metadata.get("relationships", {})
+            .get("credits", {})
+            .get("data", [])
+        )
+        if credits:
+            composers = []
+            for credit_group in credits:
+                if (
+                    credit_group.get("attributes", {}).get("kind")
+                    == "composer-and-lyrics"
+                ):
+                    credit_artists = (
+                        credit_group.get("relationships", {})
+                        .get("credit-artists", {})
+                        .get("data", [])
+                    )
+                    for artist in credit_artists:
+                        artist_name = artist.get("attributes", {}).get("name")
+                        if artist_name and artist_name not in composers:
+                            composers.append(artist_name)
+            if composers:
+                media.tags.composer = composers
+
         if not self.skip_stream_info:
             media.stream_info = await self.get_stream_info(
                 media.media_id,

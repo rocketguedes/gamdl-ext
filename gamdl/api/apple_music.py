@@ -302,7 +302,7 @@ class AppleMusicApi:
         self,
         song_id: str,
         extend: str = "extendedAssetUrls",
-        include: str = "syllable-lyrics,albums,artists",
+        include: str = "syllable-lyrics,albums,artists,credits",
     ) -> dict:
         log = logger.bind(action="get_song", song_id=song_id)
 
@@ -324,7 +324,7 @@ class AppleMusicApi:
     async def get_music_video(
         self,
         music_video_id: str,
-        include: str = "albums,artists",
+        include: str = "albums,artists,credits",
     ) -> dict:
         log = logger.bind(action="get_music_video", music_video_id=music_video_id)
 

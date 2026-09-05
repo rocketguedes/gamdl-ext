@@ -25,7 +25,7 @@ class MediaTags:
     artists: list[str] = None
     comment: str = None
     compilation: bool = None
-    composer: str = None
+    composer: str | list[str] = None
     composer_id: int = None
     composer_sort: str = None
     copyright: str = None

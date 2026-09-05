@@ -204,7 +204,12 @@ class AppleMusicBaseDownloader:
                 album_id=(tags.album_id, "Unknown Album ID"),
                 artist=(tags.artist, "Unknown Artist"),
                 artist_id=(tags.artist_id, "Unknown Artist ID"),
-                composer=(tags.composer, "Unknown Composer"),
+                composer=(
+                    tags.composer[0]
+                    if isinstance(tags.composer, list) and tags.composer
+                    else tags.composer,
+                    "Unknown Composer",
+                ),
                 composer_id=(tags.composer_id, "Unknown Composer ID"),
                 date=(tags.date, "Unknown Date"),
                 disc=(tags.disc, ""),
