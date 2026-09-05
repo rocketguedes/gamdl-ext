@@ -101,10 +101,10 @@ class MediaTags:
             "sonm": self.title_sort,
             "trkn": track_mp4,
             "xid ": self.xid,
-            "----:com.apple.itunes:barcode": (self.upc.encode("utf-8") if self.upc else None),
-            "----:com.apple.itunes:isrc": (self.isrc.encode("utf-8") if self.isrc else None),
-            "----:com.apple.itunes:label": (self.record_label.encode("utf-8") if self.record_label else None),
-            "----:com.apple.itunes:releasedate": (self.release_date.encode("utf-8") if self.release_date else None),
+            "----:com.apple.iTunes:barcode": (self.upc.encode("utf-8") if self.upc else None),
+            "----:com.apple.iTunes:isrc": (self.isrc.encode("utf-8") if self.isrc else None),
+            "----:com.apple.iTunes:label": (self.record_label.encode("utf-8") if self.record_label else None),
+            "----:com.apple.iTunes:releasedate": (self.release_date.encode("utf-8") if self.release_date else None),
         }
 
         return {
