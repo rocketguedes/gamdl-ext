@@ -2,7 +2,6 @@ import asyncio
 import datetime
 import re
 from typing import AsyncGenerator, Callable
-from xml.dom import minidom
 from xml.etree import ElementTree
 
 import m3u8
@@ -120,9 +119,7 @@ class AppleMusicSongInterface:
 
                     if self.synced_lyrics_format == SyncedLyricsFormat.TTML:
                         if not synced_lyrics:
-                            synced_lyrics.append(
-                                minidom.parseString(lyrics_ttml).toprettyxml()
-                            )
+                            synced_lyrics.append(lyrics_ttml)
                         continue
 
                     index += 1
