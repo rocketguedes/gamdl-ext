@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 description = "Native media decrypt and mux engine for gamdl"
 license = "MIT"
-repository = "https://github.com/glomatico/gamdl"
+repository = "https://github.com/rocketguedes/gamdl-ext.git"
 
 [lib]
 name = "_ammuxer"

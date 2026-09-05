@@ -3,8 +3,8 @@ requires = ["maturin>=1.8,<2"]
 build-backend = "maturin"
 
 [project]
-name = "gamdl"
-version = "3.8.5"
+name = "gamdl-ext"
+version = "3.8.5.1"
 description = "A command-line app for downloading Apple Music songs, music videos and post videos."
 readme = "README.md"
 license = "MIT"
@@ -26,10 +26,11 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/glomatico/gamdl"
+Repository = "https://github.com/rocketguedes/gamdl-ext.git"
 
 [project.scripts]
 gamdl = "gamdl.cli.cli:main"
+gamdl-ext = "gamdl.cli.cli:main"
 
 [dependency-groups]
 dev = [
