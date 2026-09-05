@@ -237,12 +237,12 @@ class CliConfig:
     ]
     # Song Interface Options
     synced_lyrics_format: Annotated[
-        SyncedLyricsFormat,
+        list[SyncedLyricsFormat],
         option(
             "--synced-lyrics-format",
-            help="Synced lyrics format",
+            help="Comma-separated synced lyrics format(s)",
             default=song_interface_sig.parameters["synced_lyrics_format"].default,
-            type=SyncedLyricsFormat,
+            type=Csv(SyncedLyricsFormat),
         ),
     ]
     song_codec_piority: Annotated[

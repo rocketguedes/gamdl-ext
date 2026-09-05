@@ -2,7 +2,7 @@ from pathlib import Path
 
 import structlog
 
-from ..interface.enums import CoverFormat
+from ..interface.enums import CoverFormat, SyncedLyricsFormat
 from ..interface.types import AppleMusicMedia, DecryptionKeyAv
 from .ammuxer import decrypt_and_mux_hex, decrypt_and_mux_wrapper
 from .base import AppleMusicBaseDownloader
@@ -43,6 +43,11 @@ class AppleMusicSongDownloader:
         download_item.synced_lyrics_path = self.get_synced_lyrics_path(
             download_item.final_path
         )
+
+        download_item.synced_lyrics_paths = {
+            fmt: self.get_synced_lyrics_path(download_item.final_path, fmt)
+            for fmt in self.base.interface.song.synced_lyrics_formats
+        }
 
         download_item.cover_path = self.get_cover_path(
             download_item.final_path,
@@ -125,12 +130,17 @@ class AppleMusicSongDownloader:
 
         log.debug("success")
 
-    def get_synced_lyrics_path(self, final_path: str) -> str:
+    def get_synced_lyrics_path(
+        self,
+        final_path: str,
+        format_: SyncedLyricsFormat | None = None,
+    ) -> str:
         log = logger.bind(action="get_synced_lyrics_path", final_path=final_path)
 
+        fmt = format_ or self.base.interface.song.synced_lyrics_format
         synced_lyrics_path = str(
             Path(final_path).with_suffix(
-                "." + self.base.interface.song.synced_lyrics_format.value
+                "." + fmt.value
             )
         )
 

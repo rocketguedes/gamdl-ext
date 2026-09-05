@@ -31,14 +31,25 @@ class AppleMusicSongInterface:
     def __init__(
         self,
         base: AppleMusicBaseInterface,
-        synced_lyrics_format: SyncedLyricsFormat = SyncedLyricsFormat.LRC,
+        synced_lyrics_format: (
+            list[SyncedLyricsFormat] | SyncedLyricsFormat
+        ) = [SyncedLyricsFormat.LRC],
         codec_priority: list[SongCodec] = [SongCodec.AAC_WEB],
         use_album_date: bool = False,
         skip_stream_info: bool = False,
         ask_codec_function: Callable[[list[dict]], dict | None] | None = None,
     ):
         self.base = base
-        self.synced_lyrics_format = synced_lyrics_format
+        if isinstance(synced_lyrics_format, list):
+            self.synced_lyrics_formats = synced_lyrics_format
+            self.synced_lyrics_format = (
+                synced_lyrics_format[0]
+                if synced_lyrics_format
+                else SyncedLyricsFormat.LRC
+            )
+        else:
+            self.synced_lyrics_formats = [synced_lyrics_format]
+            self.synced_lyrics_format = synced_lyrics_format
         self.codec_priority = codec_priority
         self.use_album_date = use_album_date
         self.skip_stream_info = skip_stream_info
@@ -99,7 +110,9 @@ class AppleMusicSongInterface:
     ) -> Lyrics:
         lyrics_ttml_et = ElementTree.fromstring(lyrics_ttml)
         unsynced_lyrics = []
-        synced_lyrics = []
+        synced_lines: dict[SyncedLyricsFormat, list[str]] = {
+            fmt: [] for fmt in self.synced_lyrics_formats
+        }
         index = 1
 
         for div in lyrics_ttml_et.iter("{http://www.w3.org/ns/ttml}div"):
@@ -112,29 +125,43 @@ class AppleMusicSongInterface:
                     stanza.append(text)
 
                 if p.attrib.get("begin"):
-                    if self.synced_lyrics_format == SyncedLyricsFormat.ELRC:
-                        synced_lyrics.append(self._get_lyrics_line_elrc(p))
+                    if SyncedLyricsFormat.ELRC in self.synced_lyrics_formats:
+                        synced_lines[SyncedLyricsFormat.ELRC].append(
+                            self._get_lyrics_line_elrc(p)
+                        )
 
-                    if self.synced_lyrics_format == SyncedLyricsFormat.LRC:
-                        synced_lyrics.append(self._get_lyrics_line_lrc(p))
+                    if SyncedLyricsFormat.LRC in self.synced_lyrics_formats:
+                        synced_lines[SyncedLyricsFormat.LRC].append(
+                            self._get_lyrics_line_lrc(p)
+                        )
 
-                    if self.synced_lyrics_format == SyncedLyricsFormat.SRT:
-                        synced_lyrics.append(self._get_lyrics_line_srt(index, p))
-
-                    if self.synced_lyrics_format == SyncedLyricsFormat.TTML:
-                        if not synced_lyrics:
-                            synced_lyrics.append(lyrics_ttml)
-                        continue
+                    if SyncedLyricsFormat.SRT in self.synced_lyrics_formats:
+                        synced_lines[SyncedLyricsFormat.SRT].append(
+                            self._get_lyrics_line_srt(index, p)
+                        )
 
                     index += 1
 
+        synced_by_format: dict[SyncedLyricsFormat, str] = {}
+        for fmt in self.synced_lyrics_formats:
+            if fmt == SyncedLyricsFormat.TTML:
+                synced_by_format[fmt] = lyrics_ttml
+            else:
+                lines = synced_lines.get(fmt, [])
+                synced_by_format[fmt] = (
+                    "\n".join(lines + ["\n"]) if lines else None
+                )
+
+        primary_synced = synced_by_format.get(self.synced_lyrics_format)
+
         return Lyrics(
-            synced="\n".join(synced_lyrics + ["\n"]) if synced_lyrics else None,
+            synced=primary_synced,
             unsynced=(
                 "\n\n".join(["\n".join(lyric_group) for lyric_group in unsynced_lyrics])
                 if unsynced_lyrics
                 else None
             ),
+            synced_by_format=synced_by_format,
         )
 
     def _parse_ttml_timestamp(

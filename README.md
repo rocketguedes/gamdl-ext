@@ -149,7 +149,7 @@ The file is created automatically on first run. Command-line arguments override 
 | `--wvd-path`                    | .wvd file path                                                    | -                             |
 | `--use-wrapper`                 | Use wrapper for account, playback, and decryption requests        | `false`                       |
 | **Song Options**                |                                                                   |                               |
-| `--synced-lyrics-format`        | Synced lyrics format                                              | `lrc`                         |
+| `--synced-lyrics-format`        | Comma-separated synced lyrics format                              | `lrc`                         |
 | `--song-codec-priority`         | Comma-separated codec priority                                    | `aac-web`                     |
 | `--use-album-date`              | Use album release date for songs                                  | `false`                       |
 | `--no-synced-lyrics`            | Don't download synced lyrics                                      | `false`                       |
@@ -247,7 +247,7 @@ Use ISO 639-1 language codes (e.g., `en-US`, `es-ES`, `ja-JP`, `pt-BR`). Don't a
 
 ### Synced Lyrics Format
 
-- `elrc` - Enhanced LRC format (word/syllable-level timing)
+- `elrc` - Enhanced LRC format
 - `lrc`
 - `srt` - SubRip subtitle format (more accurate timing)
 - `ttml` - Native Apple Music format (not compatible with most media players)

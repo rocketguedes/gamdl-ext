@@ -2,13 +2,14 @@ import datetime
 from dataclasses import dataclass
 from typing import Any
 
-from .enums import MediaFileFormat, MediaRating, MediaType
+from .enums import MediaFileFormat, MediaRating, MediaType, SyncedLyricsFormat
 
 
 @dataclass
 class Lyrics:
     synced: str = None
     unsynced: str = None
+    synced_by_format: dict[SyncedLyricsFormat, str] = None
 
 
 @dataclass

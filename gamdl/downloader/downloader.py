@@ -174,17 +174,28 @@ class AppleMusicDownloader:
                     cover_bytes,
                 )
 
-        if (
-            item.synced_lyrics_path
-            and not self.no_synced_lyrics
-            and item.media.lyrics
-            and item.media.lyrics.synced
-            and (self.overwrite or not Path(item.synced_lyrics_path).exists())
-        ):
-            self._write_synced_lyrics(
-                item.synced_lyrics_path,
-                item.media.lyrics.synced,
-            )
+        if not self.no_synced_lyrics and item.media.lyrics:
+            if item.media.lyrics.synced_by_format and item.synced_lyrics_paths:
+                for fmt, lyrics_text in item.media.lyrics.synced_by_format.items():
+                    lyrics_path = item.synced_lyrics_paths.get(fmt)
+                    if (
+                        lyrics_path
+                        and lyrics_text
+                        and (self.overwrite or not Path(lyrics_path).exists())
+                    ):
+                        self._write_synced_lyrics(
+                            lyrics_path,
+                            lyrics_text,
+                        )
+            elif (
+                item.synced_lyrics_path
+                and item.media.lyrics.synced
+                and (self.overwrite or not Path(item.synced_lyrics_path).exists())
+            ):
+                self._write_synced_lyrics(
+                    item.synced_lyrics_path,
+                    item.media.lyrics.synced,
+                )
 
     async def _download(self, item: DownloadItem) -> None:
         if item.media.error:

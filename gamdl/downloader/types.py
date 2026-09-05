@@ -12,4 +12,5 @@ class DownloadItem:
     final_path: str = None
     playlist_file_path: str = None
     synced_lyrics_path: str = None
+    synced_lyrics_paths: dict = None
     cover_path: str = None
