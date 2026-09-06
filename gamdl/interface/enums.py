@@ -111,6 +111,12 @@ class CoverFormat(Enum):
     RAW = "raw"
 
 
+class SaveCoverFormat(Enum):
+    JPG = "jpg"
+    PNG = "png"
+    RAW = "raw"
+
+
 class ArtistMediaType(Enum):
     MAIN_ALBUMS = "main-albums"
     COMPILATION_ALBUMS = "compilation-albums"

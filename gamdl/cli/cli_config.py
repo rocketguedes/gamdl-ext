@@ -23,6 +23,7 @@ from ..interface import (
     AppleMusicUploadedVideoInterface,
     ArtistMediaType,
     CoverFormat,
+    SaveCoverFormat,
     MusicVideoCodec,
     MusicVideoResolution,
     SongCodec,
@@ -466,12 +467,12 @@ class CliConfig:
         ),
     ]
     save_cover_format: Annotated[
-        CoverFormat | None,
+        SaveCoverFormat | None,
         option(
             "--save-cover-format",
             help="Save cover format",
             default=base_interface_create_sig.parameters["save_cover_format"].default,
-            type=CoverFormat,
+            type=SaveCoverFormat,
         ),
     ]
     save_cover_size: Annotated[

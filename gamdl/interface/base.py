@@ -17,7 +17,7 @@ from ..api.apple_music import AppleMusicApi
 from ..api.itunes import ItunesApi
 from ..api.wrapper import WrapperApi
 from .constants import IMAGE_FILE_EXTENSION_MAP
-from .enums import CoverFormat
+from .enums import CoverFormat, SaveCoverFormat
 from .types import Cover, DecryptionKey, MediaRating, MediaTags, MediaType, PlaylistTags
 
 logger = structlog.get_logger(__name__)
@@ -32,7 +32,7 @@ class AppleMusicBaseInterface:
         cover_format: CoverFormat,
         cover_size: int,
         cdm: Cdm,
-        save_cover_format: CoverFormat | None = None,
+        save_cover_format: SaveCoverFormat | None = None,
         save_cover_size: int | None = None,
     ) -> None:
         self.apple_music_api = apple_music_api
@@ -109,7 +109,7 @@ class AppleMusicBaseInterface:
     def format_cover(
         template_cover_url: str,
         cover_size: int,
-        cover_format: CoverFormat,
+        cover_format: CoverFormat | SaveCoverFormat,
         width: int | None = None,
         height: int | None = None,
     ) -> str:
@@ -141,7 +141,7 @@ class AppleMusicBaseInterface:
         wvd_path: str | None = None,
         itunes_api: ItunesApi | None = None,
         wrapper_api: WrapperApi | None = None,
-        save_cover_format: CoverFormat | None = None,
+        save_cover_format: SaveCoverFormat | None = None,
         save_cover_size: int | None = None,
     ):
         itunes_api = itunes_api or await ItunesApi.create(
@@ -231,9 +231,9 @@ class AppleMusicBaseInterface:
 
             return response.content
 
-    def _get_cover_template_url(self, metadata: dict, cover_format: CoverFormat | None = None) -> str:
+    def _get_cover_template_url(self, metadata: dict, cover_format: CoverFormat | SaveCoverFormat | None = None) -> str:
         fmt = cover_format or self.cover_format
-        if fmt == CoverFormat.RAW:
+        if fmt == SaveCoverFormat.RAW:
             cover_template_url = self._get_raw_cover_url(
                 metadata["attributes"]["artwork"]["url"]
             )
@@ -261,11 +261,11 @@ class AppleMusicBaseInterface:
     async def _get_cover_file_extension(
         self,
         cover_url: str,
-        cover_format: CoverFormat | None = None,
+        cover_format: CoverFormat | SaveCoverFormat | None = None,
     ) -> str | None:
         fmt = cover_format or self.cover_format
         log = logger.bind(action="get_cover_file_extension", cover_url=cover_url)
-        if fmt != CoverFormat.RAW:
+        if fmt != SaveCoverFormat.RAW:
             return f".{fmt.value}"
 
         cover_bytes = await self.get_cover_bytes(cover_url)
@@ -283,7 +283,7 @@ class AppleMusicBaseInterface:
     async def get_cover(
         self,
         metadata: dict,
-        cover_format: CoverFormat | None = None,
+        cover_format: CoverFormat | SaveCoverFormat | None = None,
         cover_size: int | None = None,
     ) -> str:
         log = logger.bind(action="get_cover", media_id=metadata["id"])
@@ -293,7 +293,7 @@ class AppleMusicBaseInterface:
 
         template_url = self._get_cover_template_url(metadata, cover_format=fmt)
 
-        if fmt == CoverFormat.RAW:
+        if fmt == SaveCoverFormat.RAW:
             cover_url = template_url
         else:
             artwork = metadata.get("attributes", {}).get("artwork", {})
