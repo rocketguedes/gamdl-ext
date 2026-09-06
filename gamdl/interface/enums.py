@@ -108,7 +108,6 @@ class UploadedVideoQuality(Enum):
 class CoverFormat(Enum):
     JPG = "jpg"
     PNG = "png"
-    RAW = "raw"
 
 
 class SaveCoverFormat(Enum):

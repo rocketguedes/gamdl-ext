@@ -1,6 +1,5 @@
 from pathlib import Path
 
-from ..interface.enums import CoverFormat
 from ..interface.types import AppleMusicMedia
 from .base import AppleMusicBaseDownloader
 from .types import DownloadItem
@@ -51,12 +50,8 @@ class AppleMusicUploadedVideoDownloader:
             download_item.staged_path,
         )
 
-        cover_bytes = (
-            await self.base.interface.base.get_cover_bytes(
-                download_item.media.cover.url
-            )
-            if self.base.interface.base.cover_format != CoverFormat.RAW
-            else None
+        cover_bytes = await self.base.interface.base.get_cover_bytes(
+            download_item.media.cover.url
         )
         await self.base.apply_tags(
             download_item.staged_path,
