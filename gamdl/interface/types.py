@@ -188,6 +188,7 @@ class AppleMusicMedia:
     playlist_tags: PlaylistTags | None = None
     extra_tags: dict | None = None
     cover: Cover | None = None
+    save_cover: Cover | None = None
     lyrics: Lyrics | None = None
     tags: MediaTags | None = None
     stream_info: StreamInfoAv | None = None

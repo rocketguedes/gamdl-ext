@@ -673,6 +673,7 @@ class AppleMusicSongInterface:
             )
 
         media.cover = await self.base.get_cover(media.media_metadata)
+        media.save_cover = await self.base.get_save_cover(media.media_metadata)
 
         media.lyrics = await self.get_lyrics(media.media_metadata)
 
