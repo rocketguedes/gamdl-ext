@@ -2,7 +2,7 @@ from pathlib import Path
 
 import structlog
 
-from ..interface.enums import CoverFormat, SyncedLyricsFormat
+from ..interface.enums import SyncedLyricsFormat
 from ..interface.types import AppleMusicMedia, DecryptionKeyAv
 from .ammuxer import decrypt_and_mux_hex, decrypt_and_mux_wrapper
 from .base import AppleMusicBaseDownloader
@@ -51,7 +51,7 @@ class AppleMusicSongDownloader:
 
         download_item.cover_path = self.get_cover_path(
             download_item.final_path,
-            media.cover.file_extension,
+            (media.save_cover or media.cover).file_extension,
         )
 
         return download_item
@@ -196,12 +196,8 @@ class AppleMusicSongDownloader:
                 download_item.media.stream_info.audio_track.use_single_content_key,
             )
 
-        cover_bytes = (
-            await self.base.interface.base.get_cover_bytes(
-                download_item.media.cover.url
-            )
-            if self.base.interface.base.cover_format != CoverFormat.RAW
-            else None
+        cover_bytes = await self.base.interface.base.get_cover_bytes(
+            download_item.media.cover.url
         )
         await self.base.apply_tags(
             download_item.staged_path,

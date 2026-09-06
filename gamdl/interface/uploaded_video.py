@@ -122,6 +122,7 @@ class AppleMusicUploadedVideoInterface:
             raise GamdlInterfaceMediaNotStreamableError(media.media_id)
 
         media.cover = await self.base.get_cover(media.media_metadata)
+        media.save_cover = await self.base.get_save_cover(media.media_metadata)
 
         media.stream_info = await self.get_stream_info(media.media_metadata)
         if not media.stream_info:

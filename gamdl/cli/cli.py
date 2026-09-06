@@ -140,6 +140,8 @@ async def main(config: CliConfig):
         cover_size=config.cover_size,
         wvd_path=config.wvd_path,
         wrapper_api=wrapper_api,
+        save_cover_format=config.save_cover_format,
+        save_cover_size=config.save_cover_size,
     )
 
     song_interface = AppleMusicSongInterface(

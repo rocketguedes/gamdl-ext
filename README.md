@@ -16,6 +16,7 @@ A command-line app for downloading Apple Music songs, music videos and post vide
 - 🏷️ **Extended Industry Identifiers** - Official ISRC (`isrc`), UPC/Barcode (`barcode`), and Record Label (`label`) tagging
 - 💿 **Release Type Classification** - Accurate categorization into `single`, `ep`, `compilation`, and `album` (`releasetype`)
 - 🌐 **Audio Language & Album Date** - Native BCP 47 `language` tagging (`audioLocale`) and album-level `releasedate`
+- 🖼️ **Flexible Cover Artwork** - Save uncompressed RAW or full-resolution master covers separately while keeping optimized artwork embedded in media files
 
 ## ✨ Features
 
@@ -189,6 +190,8 @@ The file is created automatically on first run. Command-line arguments override 
 | **File Output Options**         |                                                                   |                               |
 | `--overwrite`                   | Overwrite existing files                                          | `false`                       |
 | `--save-cover`, `-s`            | Save cover as separate file                                       | `false`                       |
+| `--save-cover-format`           | Save cover format                                                 | -                             |
+| `--save-cover-size`             | Save cover size in pixels (0 for max native resolution)           | -                             |
 | `--save-playlist`               | Save M3U8 playlist file                                           | `false`                       |
 
 ### Template Variables
@@ -223,11 +226,19 @@ The file is created automatically on first run. Command-line arguments override 
 >
 > - **yt-dlp is only used as a file download library**. Media is still fetched directly from Apple Music's servers, and yt-dlp is only responsible for handling the file download process.
 
-### Cover Format
+### Embedded Cover Format
 
 - `jpg`
 - `png`
-- `raw` - Raw format as provided by the artist (requires `save_cover` to be enabled as it doesn't embed covers into files)
+
+### Save Cover Format
+
+- `jpg`
+- `png`
+- `raw` - Original uncompressed master file provided by the artist
+
+> [!NOTE]
+> `--save-cover-size 0` requests the maximum native resolution without resizing (applies to `jpg` and `png`).
 
 ### Metadata Language
 

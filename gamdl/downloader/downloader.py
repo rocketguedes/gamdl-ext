@@ -164,9 +164,10 @@ class AppleMusicDownloader:
                 item.media.playlist_tags.track,
             )
 
-        if item.cover_path and self.save_cover and item.media.cover.url:
+        target_cover = item.media.save_cover or item.media.cover
+        if item.cover_path and self.save_cover and target_cover and target_cover.url:
             cover_bytes = await self.base.interface.base.get_cover_bytes(
-                item.media.cover.url,
+                target_cover.url,
             )
             if cover_bytes and (self.overwrite or not Path(item.cover_path).exists()):
                 self._write_cover(

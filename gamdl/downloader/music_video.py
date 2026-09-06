@@ -1,6 +1,5 @@
 from pathlib import Path
 
-from ..interface.enums import CoverFormat
 from ..interface.types import AppleMusicMedia, DecryptionKeyAv
 from .ammuxer import decrypt_and_mux_hex
 from .base import AppleMusicBaseDownloader
@@ -67,7 +66,7 @@ class AppleMusicMusicVideoDownloader:
 
         download_item.cover_path = self.get_cover_path(
             download_item.final_path,
-            media.cover.file_extension,
+            (media.save_cover or media.cover).file_extension,
         )
 
         return download_item
@@ -106,12 +105,8 @@ class AppleMusicMusicVideoDownloader:
             download_item.staged_path.endswith(".m4v"),
         )
 
-        cover_bytes = (
-            await self.base.interface.base.get_cover_bytes(
-                download_item.media.cover.url
-            )
-            if self.base.interface.base.cover_format != CoverFormat.RAW
-            else None
+        cover_bytes = await self.base.interface.base.get_cover_bytes(
+            download_item.media.cover.url
         )
         await self.base.apply_tags(
             download_item.staged_path,

@@ -468,6 +468,7 @@ class AppleMusicMusicVideoInterface:
             )
 
         media.cover = await self.base.get_cover(media.media_metadata)
+        media.save_cover = await self.base.get_save_cover(media.media_metadata)
 
         itunes_page_metadata = await self.get_itunes_page_metadata(media.media_metadata)
 
