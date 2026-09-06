@@ -51,7 +51,7 @@ class AppleMusicSongDownloader:
 
         download_item.cover_path = self.get_cover_path(
             download_item.final_path,
-            media.cover.file_extension,
+            (media.save_cover or media.cover).file_extension,
         )
 
         return download_item
